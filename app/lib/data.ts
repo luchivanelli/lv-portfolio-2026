@@ -6,8 +6,8 @@ export const personal = {
   location: "Arroyo Seco, Santa Fe — AR",
   linkedin: "https://www.linkedin.com/in/luciana-vanelli/",
   github: "https://github.com/luchivanelli",
-  cvUrl: "https://portfolio-lvanelli.vercel.app/assets/Luciana%20Vanelli.pdf",
-  photoUrl: "https://portfolio-lvanelli.vercel.app/assets/foto.jpg",
+  cvUrl: "/cv.pdf",
+  photoUrl: "/foto.jpg",
   headline: "Construyendo interfaces digitales.",
   bio: [
     "Soy desarrolladora Frontend, enfocada en crear interfaces modernas, funcionales y mantenibles. Me interesa resolver problemas técnicos de forma práctica y construir soluciones eficientes, priorizando código limpio, buenas prácticas y escalabilidad.",
