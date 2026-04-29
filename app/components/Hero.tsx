@@ -104,7 +104,7 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="relative h-dvh flex items-center pt-14 overflow-hidden"
+      className="relative h-screen flex items-center pt-14 overflow-hidden"
     >
       {/* Grid bg */}
       <div className="grid-bg absolute inset-0 opacity-30" />
