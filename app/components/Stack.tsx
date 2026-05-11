@@ -63,7 +63,7 @@ export default function Stack() {
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm border border-[#2bffb130] bg-[#2bffb110]">
                     {stackIcons[category]}
                   </div>
-                  <p className="font-['Space Mono',monospace] text-[0.7rem] sm:text-sm uppercase tracking-[0.2em] text-[#2bffb1]">
+                  <p className="font-['Space Mono',monospace] text-xs sm:text-sm uppercase tracking-[0.2em] text-[#2bffb1]">
                     {categoryLabel}
                   </p>
                 </div>
@@ -71,7 +71,7 @@ export default function Stack() {
                   {techs.map((tech) => (
                     <span
                       key={tech}
-                      className="font-['Space Mono',monospace] cursor-default whitespace-nowrap rounded-sm border border-[#252a27] bg-[#131614] px-2.5 py-1 text-[0.6rem] sm:text-sm tracking-[0.06em] text-[#8a9990] transition duration-200 ease-out hover:border-[#2bffb160] hover:text-[#2bffb1]"
+                      className="font-['Space Mono',monospace] cursor-default whitespace-nowrap rounded-sm border border-[#252a27] bg-[#131614] px-2.5 py-1 text-xs sm:text-sm tracking-[0.06em] text-[#8a9990] transition duration-200 ease-out hover:border-[#2bffb160] hover:text-[#2bffb1]"
                     >
                       {tech}
                     </span>
