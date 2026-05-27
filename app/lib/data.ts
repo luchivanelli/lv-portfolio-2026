@@ -124,6 +124,17 @@ export const projects = [
     tags: ["Next.js", "Redux Toolkit", "Tailwind", "GSAP"],
   },
   {
+    title: "MedCare",
+    description: {
+      es: "Sistema para gestionar reservas de turnos médicos online con selección de especialidades y profesionales ",
+      en: "Application to automatically split expenses across groups, with real-time debt and payment tracking.",
+    },
+    image: "/medcare.png",
+    liveUrl: "https://medcare-systems.vercel.app/",
+    codeUrl: "https://github.com/luchivanelli/sistema-reservas",
+    tags: ["Next.js", "TypeScript", "Tailwind", "PostgreSQL", "Prisma"],
+  },
+  {
     title: "LapTech Ecommerce",
     description: {
       es: "E-commerce completo con carrito de compras persistente, simulación de pagos y panel de administración intuitivo.",
@@ -133,6 +144,17 @@ export const projects = [
     liveUrl: "https://laptech-ecommerce.vercel.app/",
     codeUrl: "https://github.com/luchivanelli/ecommerce",
     tags: ["Next.js", "React Hook Form", "Zod", "Tailwind"],
+  },
+  {
+    title: "Facturación — El Pájaro",
+    description: {
+      es: "Sistema de facturación para taller mecánico. Generación de facturas en PDF.",
+      en: "Billing system for auto repair shop. PDF invoice generation.",
+    },
+    image: "/facturacion.png",
+    liveUrl: "https://facturacion-elpajaro.vercel.app/",
+    codeUrl: "https://github.com/luchivanelli/facturacion-elpajaro",
+    tags: ["React", "Redux Toolkit", "jspdf-autotable", "Tailwind"],
   },
   {
     title: "Reportes — El Pájaro",
