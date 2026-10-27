@@ -1,17 +1,21 @@
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Experience from "./components/Experience";
-import Projects from "./components/Projects";
-import Stack from "./components/Stack";
-import About from "./components/About";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+import SceneScrollBridge from "./components/motion/SceneScrollBridge";
+import SceneLoader from "./components/scene/SceneLoader";
+import About from "./components/sections/About";
+import Contact from "./components/sections/Contact";
+import Experience from "./components/sections/Experience";
+import Hero from "./components/sections/Hero";
+import Projects from "./components/sections/Projects";
+import Stack from "./components/sections/Stack";
+import Footer from "./components/ui/Footer";
+import Navbar from "./components/ui/Navbar";
 
+// Server Component: every section renders real HTML; only the canvas is client-only.
 export default function Home() {
   return (
     <>
+      <SceneLoader />
       <Navbar />
-      <main>
+      <main id="main" className="relative z-10">
         <Hero />
         <Experience />
         <Projects />
@@ -20,6 +24,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <SceneScrollBridge />
     </>
   );
 }

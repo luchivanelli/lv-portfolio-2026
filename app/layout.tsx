@@ -1,23 +1,53 @@
 import type { Metadata } from "next";
+import { DM_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
-import LanguageProvider from "./components/LanguageProvider";
+import LanguageProvider from "./components/providers/LanguageProvider";
+import SmoothScroll from "./components/providers/SmoothScroll";
+import { personal, site } from "./lib/data";
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+
+const title = `${personal.name} — Frontend Developer`;
 
 export const metadata: Metadata = {
-  title: "Luciana Vanelli — Frontend Developer",
-  description: "Desarrolladora Frontend especializada en crear experiencias web fluidas y escalables. React, Next.js, Tailwind CSS, GSAP.",
+  metadataBase: new URL(site.url),
+  title,
+  description: site.description.es,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "es_AR",
+    url: "/",
+    siteName: personal.name,
+    title,
+    description: site.description.es,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description: site.description.es,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es">
-      <head>
-        <link rel="icon" href="/favincon.ico" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
-      </head>
-      <body className="bg-[#0d0f0e] text-[#e8ede9]">
-        <LanguageProvider>{children}</LanguageProvider>
+    <html lang="es" className={`${spaceMono.variable} ${dmSans.variable}`}>
+      <body className="bg-bg text-fg font-sans antialiased">
+        <LanguageProvider>
+          <SmoothScroll>{children}</SmoothScroll>
+        </LanguageProvider>
       </body>
     </html>
   );

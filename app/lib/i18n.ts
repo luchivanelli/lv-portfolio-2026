@@ -9,6 +9,14 @@ export const translations = {
       sobreMi: "Sobre mí",
       contacto: "Contacto",
     },
+    a11y: {
+      openMenu: "Abrir menú",
+      closeMenu: "Cerrar menú",
+      home: "Ir al inicio",
+      language: "Idioma",
+      scene: "Escena 3D decorativa",
+      mainNav: "Navegación principal",
+    },
     buttons: {
       downloadCV: "Descargar CV",
       viewProjects: "Ver proyectos",
@@ -24,17 +32,13 @@ export const translations = {
       titleLines: ["Construyendo", "interfaces digitales"],
       subtitle: "Especializada en crear experiencias web fluidas con un enfoque meticuloso en el detalle y el rendimiento.",
       phrases: ["de alto impacto", "rápidas y escalables", "modernas y eficientes"],
+      scrollHint: "Scroll",
     },
-    stats: ["años de experiencia", "proyectos en producción", "tecnologías dominadas"],
     about: {
       sectionLabel: "// sobre mí",
       title: "Hola, soy Luciana",
-      bio: [
-        "Soy desarrolladora Frontend, enfocada en crear interfaces modernas, funcionales y mantenibles. Me interesa resolver problemas técnicos de forma práctica y construir soluciones eficientes, priorizando código limpio, buenas prácticas y escalabilidad.",
-        "Me gusta seguir aprendiendo constantemente para incorporar nuevas herramientas y fortalecer mi perfil profesional.",
-        "Estudié Ingeniería en Sistemas de Información en la Universidad Tecnológica Nacional de Rosario durante 2 años, y desde entonces no paré de aprender y construir.",
-      ],
       educationLabel: "Educación",
+      languagesLabel: "Idiomas",
     },
     experience: {
       sectionLabel: "// experiencia",
@@ -72,6 +76,14 @@ export const translations = {
       sobreMi: "About",
       contacto: "Contact",
     },
+    a11y: {
+      openMenu: "Open menu",
+      closeMenu: "Close menu",
+      home: "Go to top",
+      language: "Language",
+      scene: "Decorative 3D scene",
+      mainNav: "Main navigation",
+    },
     buttons: {
       downloadCV: "Download CV",
       viewProjects: "View projects",
@@ -87,17 +99,13 @@ export const translations = {
       titleLines: ["Building", "digital interfaces"],
       subtitle: "Specialized in creating smooth web experiences with a sharp focus on detail and performance.",
       phrases: ["impactful", "fast and scalable", "modern and efficient"],
+      scrollHint: "Scroll",
     },
-    stats: ["years of experience", "production projects", "technologies mastered"],
     about: {
       sectionLabel: "// about",
       title: "Hi, I'm Luciana",
-      bio: [
-        "I am a Frontend developer who focuses on building modern, functional, and maintainable interfaces. I enjoy solving technical problems practically and creating efficient solutions while prioritizing clean code, best practices, and scalability.",
-        "I like to keep learning constantly to add new tools and strengthen my professional profile.",
-        "I studied Information Systems Engineering at the National Technological University of Rosario for two years, and since then I haven't stopped learning and building.",
-      ],
       educationLabel: "Education",
+      languagesLabel: "Languages",
     },
     experience: {
       sectionLabel: "// experience",
@@ -129,7 +137,7 @@ export const translations = {
   },
 } as const;
 
-export type Translation = typeof translations[Language];
+export type Translation = (typeof translations)[Language];
 
 export const languageOptions: { code: Language; label: string }[] = [
   { code: "es", label: "ES" },

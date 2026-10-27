@@ -1,58 +1,117 @@
 @import "tailwindcss";
 
-:root {
-  --bg: #0d0f0e;
-  --surface: #131614;
-  --surface-2: #1a1e1c;
-  --border: #252a27;
-  --cyan: #2bffb1;
-  --cyan-dim: #00e5a0;
-  --text-primary: #e8ede9;
-  --text-secondary: #8a9990;
-  --text-muted: #4f5c55;
+/* ---- Design tokens ------------------------------------------------------ */
+@theme {
+  --color-bg: #0d0f0e;
+  --color-surface: #131614;
+  --color-surface-2: #1a1e1c;
+  --color-line: #252a27;
+  /* Accent for the hero (blue). SceneScrollBridge overrides --color-accent on
+     <html> as you scroll, following the rainbow palette in scene-config.ts. */
+  --color-accent: #60a5fa;
+  --color-fg: #e8ede9;
+  --color-fg-muted: #8a9990;
+  --color-fg-faint: #78887f; /* ≥ 4.5:1 on bg and surface */
 }
 
+/* Fonts are loaded with next/font in app/layout.tsx */
+@theme inline {
+  --font-mono: var(--font-space-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  /* Derived from the live accent so it follows the section colour too. */
+  --color-accent-dim: color-mix(in srgb, var(--color-accent) 82%, black);
+}
+
+/* Registered so the accent can transition when the nav jumps between sections. */
+@property --color-accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #60a5fa;
+}
+
+:root {
+  --glow: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  --glow-strong: color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+
+html {
+  transition: --color-accent 250ms linear;
+}
+
+/* ---- Base --------------------------------------------------------------- */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+
+html { scroll-behavior: auto; }
 
 body {
-  background-color: var(--bg);
-  color: var(--text-primary);
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
   overflow-x: hidden;
 }
 
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Film grain overlay */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   opacity: 0.4;
 }
 
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 2px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 2px; }
 
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ---- Utilities ---------------------------------------------------------- */
 .grid-bg {
   background-image:
-    linear-gradient(var(--surface-2) 1px, transparent 1px),
-    linear-gradient(90deg, var(--surface-2) 1px, transparent 1px);
+    linear-gradient(var(--color-surface-2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-surface-2) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
-.cursor {
-  display: inline-block;
-  width: 3px;
-  height: 0.85em;
-  background: var(--cyan);
-  margin-left: 4px;
-  vertical-align: middle;
-  animation: blink 1s step-end infinite;
+/* Soft dark halo placed behind text that sits on top of the 3D canvas */
+.text-halo {
+  background: radial-gradient(ellipse at 35% 50%, rgb(13 15 14 / 0.94) 0%, rgb(13 15 14 / 0.75) 45%, transparent 78%);
 }
 
-@keyframes blink { 50% { opacity: 0; } }
+/* Hero intro: pure CSS so it never waits for JS. --i is the stagger index. */
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-slide {
+  from { transform: translateY(24px); }
+  to { transform: translateY(0); }
+}
+.hero-in {
+  animation: hero-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(150ms + var(--i, 0) * 110ms);
+}
+/* The h1 is the LCP element: it must never be painted at opacity 0. */
+h1.hero-in { animation-name: hero-slide; }
 
 .marquee-track {
   display: flex;
@@ -60,31 +119,13 @@ body::before {
   animation: marquee 28s linear infinite;
   width: max-content;
 }
-
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.spin-slow { animation: spin-slow 30s linear infinite; }
-
 @keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 6px #2bffb180; }
-  50% { box-shadow: 0 0 18px #2bffb1cc; }
+  0%, 100% { box-shadow: 0 0 6px var(--glow-strong); }
+  50% { box-shadow: 0 0 18px var(--glow-strong); }
 }
-
 .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
-
-.gsap-hidden {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-body {
-  font-family: 'DM Sans', sans-serif;
-}
