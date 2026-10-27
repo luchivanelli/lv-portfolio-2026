@@ -20,6 +20,8 @@ export function loadGsap(): Promise<GsapBundle> {
     .then(() => Promise.all([import("gsap"), import("gsap/ScrollTrigger")]))
     .then(([g, s]) => {
       g.gsap.registerPlugin(s.ScrollTrigger);
+      // Mobile browsers resize the viewport when the URL bar hides; a full refresh there causes jank.
+      s.ScrollTrigger.config({ ignoreMobileResize: true });
       return { gsap: g.gsap, ScrollTrigger: s.ScrollTrigger };
     });
   return bundle;

@@ -128,21 +128,10 @@ export default function Core({ tier, reduced }: Props) {
     time: 0,
   });
 
-  // On-demand mode (low tier / reduced motion): render once now, then only when
-  // scroll or pointer input arrives and until the damping settles.
-  const onDemand = reduced || tier === "low";
+  // Reduced motion: the canvas is in demand mode, so render the one static frame.
   useEffect(() => {
-    if (!onDemand) return;
-    invalidate();
-    if (reduced) return;
-    const wake = () => invalidate();
-    window.addEventListener("scroll", wake, { passive: true });
-    window.addEventListener("pointermove", wake, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", wake);
-      window.removeEventListener("pointermove", wake);
-    };
-  }, [onDemand, reduced, invalidate]);
+    if (reduced) invalidate();
+  }, [reduced, invalidate]);
 
   useFrame((state, delta) => {
     const g = figure.current;
@@ -192,14 +181,6 @@ export default function Core({ tier, reduced }: Props) {
       c.spinX += spin * 0.4 * dt;
       c.time += dt * (1 + Math.abs(velocityBoost) * 0.6);
 
-      if (onDemand) {
-        const settled =
-          Math.abs(c.x - tx) + Math.abs(c.y - ty) + Math.abs(c.z - tz) + Math.abs(c.scale - tScale) < 0.002 &&
-          Math.abs(c.scatter - tScatter) + Math.abs(c.section - s) + Math.abs(c.fieldX - tFieldX) < 0.005 &&
-          Math.abs(c.tiltY - pointerX * POINTER_TILT) + Math.abs(c.tiltX + pointerY * POINTER_TILT * 0.6) < 0.002 &&
-          Math.abs(scrollState.velocity) < 1;
-        if (!settled) invalidate();
-      }
     }
 
     // --- apply: figure --------------------------------------------------------

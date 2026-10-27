@@ -6,7 +6,7 @@ export default function LanguageSwitch({ tabbable = true }: { tabbable?: boolean
   const { language, setLanguage, t, languageOptions } = useLanguage();
 
   return (
-    <div className="flex items-center gap-1 rounded-sm bg-surface-2" role="group" aria-label={t.a11y.language}>
+    <div className="inline-flex w-fit items-center gap-1 self-start rounded-sm bg-surface-2" role="group" aria-label={t.a11y.language}>
       {languageOptions.map(({ code, label }) => (
         <button
           key={code}

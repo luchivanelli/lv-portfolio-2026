@@ -27,12 +27,25 @@ function floatIndex(centers: number[], y: number) {
 
 const accent: RGB = [0, 0, 0];
 let lastAccent = "";
+let lastAccentAt = 0;
 
-/** Writes the accent for the current section to <html>, where every `accent` utility reads it. */
-function applyAccent(sectionIndex: number) {
-  const css = rgbToCss(accentAt(sectionIndex, accent));
+/** Steps per section for the accent; the CSS transition on <html> smooths between them. */
+const ACCENT_STEPS = 16;
+const ACCENT_MIN_INTERVAL_MS = 90;
+
+/**
+ * Writes the accent for the current section to <html>, where every `accent`
+ * utility reads it. Each write recalculates styles for the whole page, so the
+ * value is quantized and rate-limited; the final value always lands.
+ */
+function applyAccent(sectionIndex: number, force = false) {
+  const now = performance.now();
+  if (!force && now - lastAccentAt < ACCENT_MIN_INTERVAL_MS) return;
+  const stepped = Math.round(sectionIndex * ACCENT_STEPS) / ACCENT_STEPS;
+  const css = rgbToCss(accentAt(stepped, accent));
   if (css === lastAccent) return;
   lastAccent = css;
+  lastAccentAt = now;
   document.documentElement.style.setProperty("--color-accent", css);
 }
 
@@ -62,10 +75,14 @@ export default function SceneScrollBridge() {
           sectionCenters = sectionTriggers.map((t) => (t.start + t.end) / 2);
           projectCenters = projectTriggers.map((t) => (t.start + t.end) / 2);
         };
-        const update = (y: number) => {
+        let settleTimer = 0;
+        const update = (y: number, force = false) => {
           scrollState.section = floatIndex(sectionCenters, y);
           scrollState.project = floatIndex(projectCenters, y);
-          applyAccent(scrollState.section);
+          applyAccent(scrollState.section, force);
+          // Make sure the exact colour lands once scrolling stops.
+          window.clearTimeout(settleTimer);
+          settleTimer = window.setTimeout(() => applyAccent(scrollState.section, true), ACCENT_MIN_INTERVAL_MS + 20);
         };
 
         ScrollTrigger.create({
@@ -73,7 +90,7 @@ export default function SceneScrollBridge() {
           end: "max",
           onRefresh: (self) => {
             measure();
-            update(self.scroll());
+            update(self.scroll(), true);
           },
           onUpdate: (self) => {
             update(self.scroll());

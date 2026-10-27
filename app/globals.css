@@ -35,7 +35,8 @@
 }
 
 html {
-  transition: --color-accent 250ms linear;
+  /* Accent updates are throttled (SceneScrollBridge); this transition fills in between steps. */
+  transition: --color-accent 320ms linear;
 }
 
 /* ---- Base --------------------------------------------------------------- */

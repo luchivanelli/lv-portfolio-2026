@@ -17,7 +17,7 @@ export default function SceneLoader() {
 
   return (
     <div
-      className={`pointer-events-none fixed inset-0 z-0 transition-opacity duration-[1400ms] ease-out ${ready ? "opacity-100" : "opacity-0"}`}
+      className={`pointer-events-none fixed inset-x-0 top-0 z-0 h-lvh transition-opacity duration-[1400ms] ease-out ${ready ? "opacity-100" : "opacity-0"}`}
       role="img"
       aria-label={t.a11y.scene}
     >

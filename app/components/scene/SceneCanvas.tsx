@@ -38,15 +38,17 @@ export default function SceneCanvas() {
     <Canvas
       dpr={tier === "high" ? [1, 1.75] : [1, 1.5]}
       camera={{ fov: 40, position: [0, 0, 6], near: 0.1, far: 30 }}
-      // Low-end devices only render while something moves (see Core); high-end
-      // devices keep the idle "breathing" animation.
-      frameloop={reduced || tier === "low" ? "demand" : "always"}
+      // Continuous rendering keeps the particle drift smooth on every device;
+      // with reduced motion the scene renders a single static frame.
+      frameloop={reduced ? "demand" : "always"}
       gl={{
         antialias: tier === "high",
         alpha: true,
         powerPreference: "high-performance",
         stencil: false,
       }}
+      // The canvas is fixed: never re-measure it on scroll (saves layout reads while scrolling).
+      resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
       className="h-full w-full"
     >
       <Core key={tier} tier={tier} reduced={reduced} />
